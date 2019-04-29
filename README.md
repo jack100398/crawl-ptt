@@ -1,2 +1,1 @@
-# crawl-ptt beauty
-https://disp.cc/b/Beauty
+# download  pictures from :https://disp.cc/b/Beauty
