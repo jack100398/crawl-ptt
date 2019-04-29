@@ -1,1 +1,2 @@
-# crawl-ptt
+# crawl-ptt beauty
+https://disp.cc/b/Beauty
