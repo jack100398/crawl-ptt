@@ -220,8 +220,6 @@ def changepage1 ():
             if each in checklist :
                 continue
             Download('https://disp.cc/b/'+each)
-            text.insert(END,'進入下一篇文章\n')
-            text.see(END)
             checklist.append(urls)
         b1 +=20
 def changepage2 ():
@@ -233,8 +231,6 @@ def changepage2 ():
             if each in checklist :
                 continue
             Download('https://disp.cc/b/'+each)
-            text.insert(END,'進入下一篇文章\n')
-            text.see(END)
             checklist.append(urls)
         b2 +=20
 def changepage3 ():
@@ -246,8 +242,6 @@ def changepage3 ():
             if each in checklist :
                 continue
             Download('https://disp.cc/b/'+each)
-            text.insert(END,'進入下一篇文章\n')
-            text.see(END)
             checklist.append(urls)
         b3 +=20
 def changepage4 ():
@@ -259,8 +253,6 @@ def changepage4 ():
             if each in checklist :
                 continue
             Download('https://disp.cc/b/'+each)
-            text.insert(END,'進入下一篇文章\n')
-            text.see(END)
             checklist.append(urls)
         b4 +=20
 def changepage5 ():
@@ -272,8 +264,6 @@ def changepage5 ():
             if each in checklist :
                 continue
             Download('https://disp.cc/b/'+each)
-            text.insert(END,'進入下一篇文章\n')
-            text.see(END)
             checklist.append(urls)
         b5 +=20
     
@@ -295,6 +285,22 @@ def Download (x) :
     f1 = response.read().decode("UTF-8")
     soup = BeautifulSoup(f1,"html.parser")
     a = str(soup.find_all('a'))
+    title = soup.find_all('pre')
+    for item in title :
+        title = str(item.get_text())
+        if '\xa0' in title :
+            title = title.replace('\xa0','')
+        if ':' in title :
+            title = title.replace(':','')
+    if title == [] :
+        return 0
+    title_path = path.get()+'/'+title
+    try:
+        os.mkdir(title_path)
+        text.insert(END,'"%s"資料夾已創立\n' %title)
+        text.see(END)
+    except :
+        return 0
     target = re.findall('https://i.imgur.com/\w\w\w\w\w\w\w',a)
     if target ==[] :
         target = re.findall('http://imgur.com/\w\w\w\w\w\w\w',a)
@@ -306,16 +312,22 @@ def Download (x) :
             a = each
     for each in final :
         global count_
-        response = r.urlopen(each+'.jpg')
-        image = response.read()
+        try :
+            response = r.urlopen(each+'.jpg')
+            image = response.read()
+        except :
+            continue
         if image == wrong_picture :
             continue
         name = ''
         name_convert = each[::-1]
         for thing in range(0, 7):
             name += name_convert[thing]
-        with open(path.get()+'/'+name[::-1]+'.jpg','wb') as f:
-            f.write(image)
+        try :
+            with open(title_path+'/'+name[::-1]+'.jpg','wb') as f:
+                f.write(image)
+        except :
+            continue
         count_ +=1
         text.insert(END,str(each)+'.jpg已下载\n')
         text.see(END)
